@@ -41,7 +41,6 @@ double** kmeans(int numPoints, int pointsDimension, int clusters, double epsilon
     int smallerThanEps = 0;
 
 
-
     newCentroidsArr = (double **)malloc(clustersNum * sizeof(double *));
     if(!newCentroidsArr){
         printf("An Error Has Occurred\n");
@@ -50,13 +49,17 @@ double** kmeans(int numPoints, int pointsDimension, int clusters, double epsilon
 
     for (i = 0; i < clustersNum; i++)
     {
+        printf("i=%d\n", i);
+        printf("dim = %d\n",dimension);
+        printf("k = %d\n",clustersNum);
         newCentroidsArr[i] = (double *)malloc(dimension * sizeof(double));
+ 
         if(!newCentroidsArr[i]){
             for (j = 0; j < i; j++) {
                 free(newCentroidsArr[j]);
             }
             free(newCentroidsArr);
-            printf("An Error Has Occurred\n");
+            printf("An Error Has Occurred2\n");
             return NULL;
         }
     }
@@ -158,7 +161,7 @@ double** kmeans(int numPoints, int pointsDimension, int clusters, double epsilon
         free(newCentroidsArr[i]);
     }
     free(newCentroidsArr);
-
+  
     return centroidsArr;
 
 
