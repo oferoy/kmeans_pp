@@ -20,15 +20,14 @@ static PyObject* kmeansP(PyObject *self, PyObject *args)
     double **resCentroids;
     PyObject *PyResult;
     PyObject *centroid;
+   
 
 
     if(!PyArg_ParseTuple(args, "iiidiOO", &numOfPoints, &dimension, &clusters, &epsilon, &iterations, &pointsArray, &initialCentroids))
     {
         return NULL;
     }
-
-    dimension = PyObject_Length(PyList_GetItem(pointsArray, 0));
-
+    
     cPointsArray = (double **)malloc(numOfPoints * sizeof(double *));
     for(i=0; i<numOfPoints; i++)
     {
@@ -40,7 +39,6 @@ static PyObject* kmeansP(PyObject *self, PyObject *args)
             cPointsArray[i][j] = PyFloat_AsDouble(item);
         }
     }
-
     cCentArr = (double **)malloc(clusters * sizeof(double *));
     for(i=0; i<clusters; i++)
     {
@@ -53,7 +51,6 @@ static PyObject* kmeansP(PyObject *self, PyObject *args)
         }
     }
 
-    printf("dim module = %d\n",dimension);
     resCentroids = kmeans(numOfPoints, dimension, clusters, epsilon, iterations, cPointsArray, cCentArr);
     PyResult = PyList_New(clusters); 
     for (i = 0; i < clusters; i++)
@@ -106,6 +103,3 @@ PyMODINIT_FUNC PyInit_kmeans_capi(void)
     }
     return m;
 }
-
-
-

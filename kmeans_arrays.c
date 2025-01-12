@@ -49,9 +49,7 @@ double** kmeans(int numPoints, int pointsDimension, int clusters, double epsilon
 
     for (i = 0; i < clustersNum; i++)
     {
-        printf("i=%d\n", i);
-        printf("dim = %d\n",dimension);
-        printf("k = %d\n",clustersNum);
+        
         newCentroidsArr[i] = (double *)malloc(dimension * sizeof(double));
  
         if(!newCentroidsArr[i]){
@@ -82,7 +80,9 @@ double** kmeans(int numPoints, int pointsDimension, int clusters, double epsilon
         free(newCentroidsArr);
     }
 
+    
 
+    
 
  /*main algorithm*/
     for(i = 0; i < itersNum; i++){
@@ -144,7 +144,7 @@ double** kmeans(int numPoints, int pointsDimension, int clusters, double epsilon
             break;
         }
 
-
+        
 
         for (j = 0; j < clustersNum; j++){
             for (k = 0; k < dimension; k++){
@@ -163,7 +163,4 @@ double** kmeans(int numPoints, int pointsDimension, int clusters, double epsilon
     free(newCentroidsArr);
   
     return centroidsArr;
-
-
-
 }

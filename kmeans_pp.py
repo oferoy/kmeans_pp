@@ -64,9 +64,12 @@ df2 = pd.read_csv(pointsFile2, header=None)
 dfMerged = pd.merge(df1, df2, on=0)
 dfSorted = dfMerged.sort_values(by=0)
 
-pointsArr = np.array(dfSorted.iloc[:,1:].to_numpy())
-numOfPoints = len(pointsArr)
-dimension = len(pointsArr[0])
+numpyPointsArr = np.array(dfSorted.iloc[:,1:].to_numpy())
+numOfPoints = len(numpyPointsArr)
+dimension = len(numpyPointsArr[0])
+pointsArr = numpyPointsArr.tolist()
+
+
 
 def dist(p1, p2):
     dist = 0.0
@@ -94,49 +97,28 @@ def probabilityFunc(p1, points, centroids):
 def centroidInit():
     centroidsArr = []
     np.random.seed(1234)
-    chosenIndex = np.random.choice(pointsArr.shape[0])
-    centroidsArr.append(pointsArr[chosenIndex])
+    chosenIndex = np.random.choice(numpyPointsArr.shape[0])
+    centroidsArr.append(numpyPointsArr[chosenIndex].tolist())
     centroidIndices = []
     centroidIndices.append(chosenIndex)
 
     for i in range(k-1):
         probs = []
-        for p in pointsArr:
-            probs.append(probabilityFunc(p,pointsArr,centroidsArr))
+        for p in numpyPointsArr:
+            probs.append(probabilityFunc(p,numpyPointsArr,centroidsArr))
 
-        nextCentroidIdx = np.random.choice(pointsArr.shape[0], p=probs)
-        centroidsArr.append(pointsArr[nextCentroidIdx])
+        nextCentroidIdx = np.random.choice(numpyPointsArr.shape[0], p=probs)
+        centroidsArr.append(numpyPointsArr[nextCentroidIdx].tolist())
         centroidIndices.append(nextCentroidIdx)
 
     print(centroidIndices)
+    return centroidsArr
+
+
+    
+
     
 finalCentroids = []
 initialCentroids = centroidInit()
 finalCentroids = km.kmeansP(numOfPoints, dimension, k, EPSILON, iter, pointsArr, initialCentroids)
 print(finalCentroids)
-# numOfPoints = len(pointsArr)
-# dimension = len(pointsArr[0])
-
-# if(k <= 1 or k >= numOfPoints):
-#     print("Invalid number of clusters!")
-#     exit()
-
-
-# centroidsArr = []
-# for i in range(k):
-#     centroidsArr.append(pointsArr[i])
-
-# centroidsArr = km.kmeansP(numOfPoints, dimension, k, EPSILON, 200, pointsArr, centroidsArr)
-
-# for c in range(k):
-#     for d in range(dimension - 1):
-#         formatted = "%.4f"%centroidsArr[c][d]
-#         print(f"{formatted},", end="")
-#     formatted = "%.4f"%centroidsArr[c][dimension - 1]
-#     print(formatted)
-
-
-
-  
-
-        
