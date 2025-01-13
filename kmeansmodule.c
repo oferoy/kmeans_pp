@@ -29,9 +29,21 @@ static PyObject* kmeansP(PyObject *self, PyObject *args)
     }
     
     cPointsArray = (double **)malloc(numOfPoints * sizeof(double *));
+    if(!cPointsArray){
+        printf("An Error Has Occurred\n");
+        return NULL;
+    }
     for(i=0; i<numOfPoints; i++)
     {
         cPointsArray[i] = (double *)malloc(dimension * sizeof(double));
+        if(!cPointsArray){
+            for (j = 0; j < i; j++) {
+                free(cPointsArray[j]);
+            }
+            free(cPointsArray);
+            printf("An Error Has Occurred\n");
+            return NULL;
+        }
         line = PyList_GetItem(pointsArray, i);
         for(j=0; j<dimension; j++)
         {
@@ -40,9 +52,29 @@ static PyObject* kmeansP(PyObject *self, PyObject *args)
         }
     }
     cCentArr = (double **)malloc(clusters * sizeof(double *));
+    if(!cCentArr){
+        for (j = 0; j < numOfPoints; j++) {
+            free(cPointsArray[j]);
+        }
+        free(cPointsArray);
+        printf("An Error Has Occurred\n");
+        return NULL;
+    }
     for(i=0; i<clusters; i++)
     {
         cCentArr[i] = (double *)malloc(dimension * sizeof(double));
+        if(!cCentArr[i]){
+        for (j = 0; j < numOfPoints; j++) {
+            free(cPointsArray[j]);
+        }
+        for (j = 0; j < i; j++) {
+            free(cCentArr[j]);
+        }
+        free(cPointsArray);
+        free(cCentArr);
+        printf("An Error Has Occurred\n");
+        return NULL;
+    }
         line = PyList_GetItem(initialCentroids, i);
         for(j=0; j<dimension; j++)
         {

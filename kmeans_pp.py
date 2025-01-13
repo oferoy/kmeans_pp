@@ -111,7 +111,9 @@ def centroidInit():
         centroidsArr.append(numpyPointsArr[nextCentroidIdx].tolist())
         centroidIndices.append(nextCentroidIdx)
 
-    print(centroidIndices)
+    for i in range(len(centroidIndices) - 1):
+        print(f"{centroidIndices[i]},", end="")
+    print(centroidIndices[len(centroidIndices)-1])
     return centroidsArr
 
 
@@ -121,4 +123,9 @@ def centroidInit():
 finalCentroids = []
 initialCentroids = centroidInit()
 finalCentroids = km.kmeansP(numOfPoints, dimension, k, EPSILON, iter, pointsArr, initialCentroids)
-print(finalCentroids)
+for c in range(k):
+    for d in range(dimension - 1):
+        formatted = "%.4f"%finalCentroids[c][d]
+        print(f"{formatted},", end="")
+    formatted = "%.4f"%finalCentroids[c][dimension - 1]
+    print(formatted)
